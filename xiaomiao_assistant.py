@@ -139,7 +139,7 @@ class Translator(Skill):
         # TODO: 判断是否需要翻译
         # 提示：检查是否包含"翻译"、"什么意思"、"是什么"等关键词
         # 或者检查是否包含英文字母
-        return re.search(r"翻译|什么意思|是什么|[a-zA-Z]",user_input)
+        return re.search(r"翻译|什么意思|是什么|怎么说",user_input)
         
 
     def handle(self, user_input):
@@ -151,9 +151,9 @@ class Translator(Skill):
         # 4. 如果没找到，返回"这个词暂时不认识"
         # 提示：使用 re.findall(r'[a-zA-Z]+', user_input) 提取英文
         input_word=re.findall(r'[a-zA-Z]+',user_input)
-        for word  in self.word_dic:
-            if input_word==word:
-                return f"{input_word}的意思是:{self.word_dic[word]}"
+        for word  in input_word:
+            if word.lower() in self.word_dic:
+                return f"{word}的意思是:{self.word_dic[word.lower()]}"
             
         return "这个单词我暂时还没学会,再换一个吧"
                 
