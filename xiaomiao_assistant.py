@@ -150,11 +150,15 @@ class Translator(Skill):
         # 3. 如果找到，返回 "单词 的意思是：翻译"
         # 4. 如果没找到，返回"这个词暂时不认识"
         # 提示：使用 re.findall(r'[a-zA-Z]+', user_input) 提取英文
-        input_word=re.findall(r'[a-zA-Z]+',user_input)
-        for word  in input_word:
-            if word.lower() in self.word_dic:
-                return f"{word}的意思是:{self.word_dic[word.lower()]}"
+        words=re.findall(r'[a-zA-Z]+',user_input)
+        results=[]
+        for word in words:
+            trans=self.word_dic.get(word.lower())
+            if trans:
+                results.append(f"{word}的意思是：{trans}")
             
+        if results:
+            return "\n".join(results)
         return "这个单词我暂时还没学会,再换一个吧"
                 
 
@@ -210,6 +214,9 @@ class Assistant:
         # - self.skills: 技能列表
         self._skills=[]
         
+    @property
+    def name(self):
+        return self._name
 
     def add_skill(self, skill):
         # TODO: 添加技能到列表
@@ -240,6 +247,14 @@ class Assistant:
         self._history.add(robot_msg)
 
         return response        
+    
+
+    def show_history(self):
+        """返回格式化的历史记录"""
+        return str(self._history)
+    
+    def message_count(self):
+        return len(self._history)
 
 
 # ===== 8. main 入口 =====
@@ -253,21 +268,21 @@ if __name__ == "__main__":
     bot.add_skill(Translator())
     bot.add_skill(WeatherSkill())
     # TODO: 3. 打印欢迎信息
-    print(f"欢迎使用{bot._name},试着问我一些问题吧，但是不要太难哦")
+    print(f"欢迎使用{bot.name},试着问我一些问题吧，但是不要太难哦")
     # TODO: 4. 进入对话循环
     while True:
         user_input = input("你: ").strip()
         
         if user_input == "quit":
             # 打印再见消息和对话数量
-            print(f"{bot._name}:再见朋友，我们这次一共进行了{len(bot._history)}条对话，期待下次再会")
+            print(f"{bot.name}:再见朋友，我们这次一共进行了{bot.message_count()}条对话，期待下次再会")
             break
         
         if user_input == "history":
             # 打印聊天记录
-            print(bot._history)
+            print(bot.show_history())
             continue
         
         reply = bot.chat(user_input)
-        print(f"{bot._name}: {reply}\n")
+        print(f"{bot.name}: {reply}\n")
     
