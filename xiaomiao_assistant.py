@@ -188,17 +188,13 @@ class WeatherSkill(Skill):
 
     def handle(self, user_input):
         # TODO: 执行天气查询
-        # 步骤：
-        # 1. 从用户输入中提取城市名
-        # 2. 在字典中查找天气
-        # 3. 如果找到，返回 "城市天气：天气信息"
-        # 4. 如果没找到，返回"这个城市的天气目前我还不知道哦"
-        # 提示：使用 for city in weather_dic: if city in user_input:
+        results=[]
         for city in self.weather_dic:
             if city in user_input:
-                return f"{city}的天气：{self.weather_dic[city]}"
-        
-        return "这个城市的天气我目前还不知道哦,再换一个吧"
+                results.append(f"{city}的天气：{self.weather_dic[city]}")
+        if results:
+            return "\n".join(results)
+        return "这个城市的天气我目前还没去过呢,再换一个吧"
         
 
 # ===== 7. Assistant 主类 =====
