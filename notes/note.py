@@ -3,13 +3,13 @@ import sys
 def process():
     if len(sys.argv)==1:
         print("没有检测到指令诶")
-    if sys.argv[1]=="--list":
+    elif sys.argv[1]=="--list":
         list()
-    if sys.argv[1]=="--add":
+    elif sys.argv[1]=="--add":
         content=sys.argv[2]
         add(content)
-    if sys.argv[1]=="--delete":
-        delete(sys.argv[2])
+    elif sys.argv[1]=="--delete":
+        delete(int(sys.argv[2]))
     else:
         print("暂无这样的指令，再试一下其他的吧")
 
@@ -31,8 +31,8 @@ def add(content):
 def list():
     with open("note.txt","r") as f:
         lines=f.readlines()
-        enumerate(lines,start=1)
-        print(enumerate)
+        for i,line in enumerate(lines,start=1):
+            print(f"{i}:{line}",end="")
 
 
 if __name__ == "__main__":
