@@ -1,22 +1,23 @@
-import sys
+import argparse
+
+
+parser=argparse.ArgumentParser(description="命令行便签本")
+parser.add_argument("--list",action="store_true")
+parser.add_argument("--add",nargs="?")
+parser.add_argument("--delete",type=int,nargs="?")
 
 def process():
-    if len(sys.argv)==1:
-        print("没有检测到指令诶")
-    elif sys.argv[1]=="--list":
+
+    args=parser.parse_args()
+
+    if args.list:
         list_notes()
-    elif sys.argv[1]=="--add":
-        if len(sys.argv)<3:
-            print("请提供便签内容")
-        else:
-            add_notes(sys.argv[2])
-    elif sys.argv[1]=="--delete":
-        if len(sys.argv) < 3:
-            print("请输入要删除的便签序号")
-        else:
-            delete_notes(int(sys.argv[2]))
+    elif args.add is not None:
+        add_notes(args.add)
+    elif args.delete is not None:
+        delete_notes(args.delete)
     else:
-        print("暂无这样的指令，再试一下其他的吧")
+        print("指令有误或者未输入内容，请再试一下吧")
 
 
 def delete_notes(index):
