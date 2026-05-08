@@ -12,10 +12,10 @@ def process():
 
     if args.list:
         list_notes()
-    elif args.add is not None:
+    elif args.add :
         add_notes(args.add)
     elif args.delete is not None:
-        delete_notes(args.delete)
+        delete_notes(args.delete - 1)
     else:
         print("指令有误或者未输入内容，请再试一下吧")
 
@@ -23,7 +23,10 @@ def process():
 def delete_notes(index):
     with open("note.txt","r") as f:
         lines=f.readlines()
-        del lines[index]
+    if index<0 or index>=len(lines):
+        print(f"序号已超出范围，目前只有{len(lines)}条，请再试一下吧")
+        return
+    del lines[index]
     with open("note.txt","w") as f:
         f.writelines(lines)
         print("删除成功")
